@@ -11,6 +11,8 @@ axios.defaults.baseURL = 'http://localhost:8081/admin/api'
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 
+Vue.prototype.$http = axios
+
 Vue.use(ElementUI)
 
 /* eslint-disable no-new */
