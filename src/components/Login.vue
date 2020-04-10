@@ -1,8 +1,6 @@
 <template>
   <body id="poster">
-  <el-form class="login-container" label-position="left"
-           label-width="0px">
-    <h3 class="login_title">后台登录</h3>
+  <el-form class="login-container">
     <div class="login_box">
         <!-- 头像 -->
         <div class="avatar_box">
@@ -35,7 +33,7 @@
           </div>
         </el-form-item>
 
-        <el-checkbox v-model="checked">记住账号</el-checkbox>
+        <el-checkbox v-model="checked" class="checked">记住账号</el-checkbox>
 
         <el-form-item class="btns">
           <el-button type="primary" @click="login">登录</el-button>
@@ -157,7 +155,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
   #poster {
     background: url("../assets/login/bg.jpg") no-repeat center;
     height: 100%;
@@ -168,15 +166,9 @@ export default {
   body{
     margin: 0px;
   }
-  .login-container {
-    border-radius: 15px;
-    background-clip: padding-box;
-    margin: 90px auto;
-    width: 350px;
-    padding: 35px 35px 15px 35px;
-    background: #fff;
-    border: 1px solid #eaeaea;
-    box-shadow: 0 0 25px #cac6c6;
+  .login_container{
+    background-color: #2b4b6b;
+    height: 100%;
   }
   .login_title {
     margin: 0px auto 40px auto;
@@ -184,8 +176,8 @@ export default {
     color: #505458;
   }
   .login_box{
-    width: 450px;
-    height: 490px;
+    width: 390px;
+    height: 480px;
     background-color: #fff;
     border-radius: 3px;
     position: absolute;
@@ -226,7 +218,16 @@ export default {
   }
   .btns{
     display: flex;
-    justify-content:flex-end;
+    justify-content: space-between;
+    margin-top:11px;
+    margin-right: 10px;
+  }
+  .el-button+.el-button {
+    margin-left: 165px;
+  }
+  .checked{
+    margin-left: -265px;
+    margin-top: -20px;
   }
 
 </style>
