@@ -136,16 +136,11 @@ export default {
         })
         .then(successResponse => {
           if (successResponse.data.code === 200) {
-            this.$message({
-              message: '登录成功',
-              type: 'success'
-            })
+            this.$message.success('登录成功')
+            window.sessionStorage.setItem('token', this.$data.token)
             this.$router.push({path: '/index'})
           } else {
-            this.$message({
-              message: '登录失败，请输入正确的用户名和密码',
-              type: 'error'
-            })
+            this.$message.error('登录失败，请输入正确的用户名和密码')
           }
         })
         .catch(failResponse => {
@@ -155,7 +150,7 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
   #poster {
     background: url("../assets/login/bg.jpg") no-repeat center;
     height: 100%;
@@ -226,8 +221,7 @@ export default {
     margin-left: 165px;
   }
   .checked{
-    margin-left: -265px;
-    margin-top: -20px;
+    margin-left: 10px;
   }
 
 </style>
