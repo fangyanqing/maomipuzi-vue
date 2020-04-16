@@ -49,8 +49,8 @@
         <el-table-column
           prop="roleType"
           label="角色"
-          :formatter="formatRoleType"
-          width="120">
+          width="120"
+          :formatter="roleTypeFormat">
         </el-table-column>
         <el-table-column
           prop="phone"
@@ -67,19 +67,22 @@
           label="日期"
           sortable
           width="200"
-          column-key="date">
+          column-key="date"
+          :formatter="dateFormat">
         </el-table-column>
         <el-table-column
+          prop="enable"
           label="是否启用"
           width="120">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.enable"
-              active-value="1"
-              inactive-value="0"
+              :active-value="1"
+              :inactive-value="0"
               active-color="#419FFF"
               inactive-color="#B9B9B9"
-              @change="changeSwitch(scope.row)"/>
+              @change="changeSwitch(scope.row)">
+            </el-switch>
           </template>
         </el-table-column>
         <el-table-column
@@ -97,8 +100,10 @@
       <el-pagination
         background
         layout="prev, pager, next"
-        :page-size="3"
-        :total="30"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :total="total"
+        @current-change="page"
          >
       </el-pagination>
     </el-card>
@@ -107,33 +112,18 @@
 </template>
 
 <script>
+import Moment from 'moment'
+
 export default {
   name: 'adminManager',
 
   data () {
     return {
-      tableData: [
-        {
-          adminId: '1',
-          adminName: 'daqing',
-          roleType: '0',
-          phone: '18877191649',
-          email: '2637528271@qq.com',
-          createTime: '2020-04-15 00:00:00',
-          enable: '1'
-        }, {
-          adminId: '2',
-          adminName: 'daqing',
-          roleType: '1',
-          phone: '18877191649',
-          email: '2637528271@qq.com',
-          createTime: '2020-04-15 00:00:00',
-          enable: '2'
-        }
-      ],
+      tableData: [],
       valueTime: '',
-      pageSize: '3',
-      total: '30'
+      currentPage: 0,
+      pageSize: 0,
+      total: 0
     }
   },
 
@@ -141,32 +131,47 @@ export default {
     handleClick (row) {
       console.log(row)
     },
-    changeSwitch (data) {
-      console.log(data)
+    changeSwitch (row) {
+      console.log(row)
     },
-    formatRoleType: function (row, column, cellValue) {
-      if (cellValue === '0') {
+    dateFormat (row) {
+      if (row.createTime === null) {
+        return ''
+      }
+      return Moment(row.createTime).format('YYYY-MM-DD HH:mm:ss')
+    },
+    roleTypeFormat (date) {
+      if (date.roleType === 0) {
         return '超级管理员'
       }
-      if (cellValue === '1') {
+      if (date.roleType === 1) {
         return '管理员'
       }
-      if (cellValue === '2') {
+      if (date.roleType === 2) {
         return '审核员'
       }
+      if (date.roleType === null) {
+        return ''
+      }
+    },
+    page (currentPage) {
+      const _this = this
+      this.$axios.get('http://localhost:8081/admin/search/' + (currentPage) + '/2').then(function (resp) {
+        console.log(resp)
+        _this.tableData = resp.data.data.list
+      })
     }
+  },
+  created () {
+    const _this = this
+    this.$axios.get('http://localhost:8081/admin/search/1/2').then(function (resp) {
+      console.log(resp)
+      _this.tableData = resp.data.data.list
+      _this.pageSize = resp.data.data.size
+      _this.total = resp.data.data.total
+    }).catch(failResponse => {
+    })
   }
-
-  // created () {
-  //   const _this = this
-  //   this.$axios.get('http://localhost:8081/admin/findAll').then(function (resp) {
-  //     console.log(resp)
-  //     _this.tableData = resp.data.registerUsers
-  //     // _this.pageSize = resp.data.size
-  //   // _this.total = resp.data.total
-  //   }).catch(failResponse => {
-  //   })
-  // }
 }
 </script>
 
