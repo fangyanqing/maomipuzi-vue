@@ -41,7 +41,8 @@
           <el-menu style="background-color: rgb(234,237,237);" router :default-openeds="['0']">
             <el-submenu style="border-bottom: 1px solid #F4F4F4" v-for="(item,index) in $router.options.routes2" :index="index+''" :key="item.name">
               <template slot="title">{{item.name}}</template>
-              <el-menu-item v-for="(item2) in item.children" :index="item2.path" :key="item2.name">{{item2.name}}</el-menu-item>
+              <el-menu-item v-for="(item2) in item.children" :index="item2.path" :key="item2.name">{{item2.name}}
+              </el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -75,5 +76,8 @@ export default {
 <style scoped>
   .avatar{
     margin: 0px 0px 0px 300px;
+  }
+  .title{
+    font-size: 18px;
   }
 </style>

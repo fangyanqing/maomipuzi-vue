@@ -3,10 +3,11 @@ import Router from 'vue-router'
 // 导入刚才编写的组件
 import Login from '@/components/Login'
 import Index from '@/views/index/index'
-import adminManager from '@/views/system/adminManager'
-import roleManager from '@/views/system/roleManager'
+import adminManager from '@/views/system/admin/adminManager'
+import roleManager from '@/views/system/role/roleManager'
 import loginLog from '@/views/system/loginLog'
 // import * as process from '../../.eslintrc'
+import add from '@/views/system/admin/add'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ const routes = [
         path: '/adminManager',
         name: '管理员管理',
         component: adminManager
+      },
+      {
+        path: '/add',
+        name: '添加管理员',
+        component: add
       },
       {
         path: '/roleManager',
@@ -149,6 +155,11 @@ const routes2 = [
         component: adminManager
       },
       {
+        path: '/add',
+        name: '添加管理员',
+        component: add
+      },
+      {
         path: '/roleManager',
         name: '角色管理',
         component: roleManager
@@ -194,26 +205,7 @@ const routes2 = [
     name: '订单',
     component: Index,
     children: [
-      {
-        path: '',
-        name: '订单查询',
-        component: adminManager
-      },
-      {
-        path: '',
-        name: '订单添加',
-        component: roleManager
-      },
-      {
-        path: '',
-        name: '订单修改',
-        component: loginLog
-      },
-      {
-        path: '',
-        name: '订单删除',
-        component: loginLog
-      }
+      {}
     ]
   },
   // ----------------------------------------------------------------------------------------------

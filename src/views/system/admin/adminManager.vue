@@ -9,20 +9,24 @@
     <!--搜索框-->
     <el-card style="margin-top: 10px">
       <el-row :gutter="20">
-        <el-col :span="8">
+        <el-col :span="7">
           <el-date-picker
             v-model="valueTime"
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
-            end-placeholder="结束日期">
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions">
           </el-date-picker>
         </el-col>
-<!--        <el-col :span="6">-->
-<!--          <el-input placeholder="请输入内容">-->
-<!--            <el-button slot="append" icon="el-icon-search" ></el-button>-->
-<!--          </el-input>-->
-<!--        </el-col>-->
+        <el-col :span="6">
+          <el-input placeholder="请输入内容">
+            <el-button slot="append" icon="el-icon-search" ></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="primary" icon="el-icon-plus" @click="addClick()">添加</el-button>
+        </el-col>
       </el-row>
     </el-card>
     <el-card style="width:100%;margin-top: 10px">
@@ -123,7 +127,12 @@ export default {
       valueTime: '',
       currentPage: 0,
       pageSize: 0,
-      total: 0
+      total: 0,
+      pickerOptions: {
+        disabledDate: (time) => {
+          return time.getTime() > Date.now()
+        }
+      }
     }
   },
 
@@ -161,6 +170,9 @@ export default {
         _this.tableData = resp.data.data.list
       })
     }
+  },
+  addClick () {
+    this.$router.push({path: '/add'})
   },
   created () {
     const _this = this
