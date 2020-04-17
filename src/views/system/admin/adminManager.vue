@@ -1,4 +1,4 @@
-<template>
+<template xmlns:el-col="http://www.w3.org/1999/html">
   <div>
     <!-- 面包屑导航区 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -95,7 +95,7 @@
           width="160">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button @click="editClick(scope.row)" type="text" size="small">编辑</el-button>
             <el-button type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
@@ -111,7 +111,92 @@
          >
       </el-pagination>
     </el-card>
+    <!-- 模态框的实现 -->
+    <el-dialog title="编辑管理员" :visible.sync="dialogFormVisible" >
+     <el-form ref="adminFormBox" :model="adminForm" label-width="100px" class="demo-ruleForm" size="mini">
+       <el-row>
+         <el-col :span="10">
+           <el-form-item label="姓名" >
+             <el-input v-model="adminForm.adminName" auto-complete="off"></el-input>
+           </el-form-item>
+         </el-col>
+         <el-col :span="10">
+           <el-form-item label="密码">
+             <el-input v-model="adminForm.password" auto-complete="off"></el-input>
+           </el-form-item >
+         </el-col>
+       </el-row>
 
+       <el-row>
+         <el-col :span="10">
+           <el-form-item label="电话">
+             <el-input v-model="adminForm.phone" auto-complete="off"></el-input>
+           </el-form-item >
+         </el-col>
+         <el-col :span="10">
+           <el-form-item label="邮箱">
+             <el-input v-model="adminForm.email" auto-complete="off"></el-input>
+           </el-form-item >
+         </el-col>
+       </el-row>
+
+       <el-row>
+         <el-col :span="10">
+           <el-form-item label="身份证">
+             <el-input v-model="adminForm.identification" auto-complete="off"></el-input>
+           </el-form-item >
+         </el-col>
+         <el-col :span="10">
+           <el-form-item label="住址">
+             <el-input v-model="adminForm.address" auto-complete="off"></el-input>
+           </el-form-item >
+         </el-col>
+       </el-row>
+
+       <el-row>
+         <el-col :span="10">
+           <el-form-item label="性别">
+               <el-radio v-model="adminForm.gender" :label="1">男</el-radio>
+               <el-radio v-model="adminForm.gender" :label="2">女</el-radio>
+           </el-form-item >
+         </el-col>
+         <el-col :span="10">
+           <el-form-item label="头像">
+             <el-upload
+               class="avatar-uploader"
+               action="https://jsonplaceholder.typicode.com/posts/"
+               :show-file-list="false"
+               :on-success="handleAvatarSuccess"
+               :before-upload="beforeAvatarUpload">
+               <img v-if="imageUrl" :src="imageUrl" class="avatar">
+               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+             </el-upload>
+           </el-form-item >
+         </el-col>
+       </el-row>
+
+       <el-row>
+         <el-col :span="10"> <el-form-item label="角色">
+           <el-radio v-model="adminForm.roleType" :label="0">超级管理员</el-radio>
+           <el-radio v-model="adminForm.roleType" :label="1">管理员</el-radio>
+           <el-radio v-model="adminForm.roleType" :label="2">审核员</el-radio>
+         </el-form-item >
+         </el-col>
+         <el-col :span="10">
+           <el-form-item label="状态">
+             <el-radio v-model="adminForm.enable" :label="1">启用</el-radio>
+             <el-radio v-model="adminForm.enable" :label="0">禁用</el-radio>
+           </el-form-item >
+         </el-col>
+       </el-row>
+
+     </el-form>
+      <div slot="footer" class="dialog-footer">
+       <el-button @click="dialogFormVisible = false">取 消</el-button>
+       <el-button type="primary" @click="submitForm">确 定</el-button>
+       <el-button type="info" @click="resetForm">重置</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -132,7 +217,21 @@ export default {
         disabledDate: (time) => {
           return time.getTime() > Date.now()
         }
-      }
+      },
+      dialogFormVisible: false,
+      adminForm: {
+        adminName: '',
+        password: '',
+        gender: '',
+        avatar: '',
+        phone: '',
+        email: '',
+        identification: '',
+        address: '',
+        roleType: '',
+        enable: ''
+      },
+      imageUrl: ''
     }
   },
 
@@ -163,16 +262,71 @@ export default {
         return ''
       }
     },
+    // 分页
     page (currentPage) {
       const _this = this
       this.$axios.get('http://localhost:8081/admin/search/' + (currentPage) + '/2').then(function (resp) {
         console.log(resp)
         _this.tableData = resp.data.data.list
       })
+    },
+    // 添加页面跳转
+    addClick () {
+      this.$router.push({path: '/add'})
+    },
+    // 修改
+    editClick (row) {
+      console.log(row.adminId)
+      // 显示弹框
+      this.dialogFormVisible = true
+      // 新增弹框标题
+      this.dialogStatus = 'editClick'
+      // 获得数据显示在编辑信息模态框里面
+      this.adminForm = Object.assign({}, row)
+      console.log(this.adminForm.gender)
+    },
+    // 头像上下传
+    handleAvatarSuccess (res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    submitForm () {
+      const _this = this
+      this.$axios.put('http://localhost:8081/admin/update/' + this.adminForm.adminId, this.adminForm).then(function (resp) {
+        if (resp.data.code === 200) {
+          _this.$alert('修改成功', '消息', {
+            confirmButtonText: '确定',
+            callback: action => {
+              _this.$router.push({path: '/index'})
+            }
+          })
+        } else {
+          _this.$alert('修改失败', '消息', {
+            confirmButtonText: '确定',
+            callback: action => {
+              _this.$message({
+                type: 'info',
+                message: '页面已刷新'
+              })
+            }
+          })
+        }
+      }).catch(failResponse => {
+      })
+    },
+    resetForm () {
+      this.$refs.adminFormBox.resetFields()
     }
-  },
-  addClick () {
-    this.$router.push({path: '/add'})
   },
   created () {
     const _this = this
@@ -188,4 +342,27 @@ export default {
 </script>
 
 <style scoped>
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+  }
+  .avatar {
+    width: 80px;
+    height: 80px;
+    display: block;
+  }
 </style>
