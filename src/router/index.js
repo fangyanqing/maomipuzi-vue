@@ -7,7 +7,6 @@ import adminManager from '@/views/system/admin/adminManager'
 import roleManager from '@/views/system/role/roleManager'
 import loginLog from '@/views/system/loginLog'
 // import * as process from '../../.eslintrc'
-import add from '@/views/system/admin/add'
 
 Vue.use(Router)
 
@@ -25,16 +24,12 @@ const routes = [
     path: '/index',
     name: '首页',
     component: Index,
+    redirect: '/adminManager',
     children: [
       {
         path: '/adminManager',
         name: '管理员管理',
         component: adminManager
-      },
-      {
-        path: '/add',
-        name: '添加管理员',
-        component: add
       },
       {
         path: '/roleManager',
@@ -153,11 +148,6 @@ const routes2 = [
         path: '/adminManager',
         name: '管理员管理',
         component: adminManager
-      },
-      {
-        path: '/add',
-        name: '添加管理员',
-        component: add
       },
       {
         path: '/roleManager',

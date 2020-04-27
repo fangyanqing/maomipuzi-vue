@@ -112,7 +112,7 @@
       </el-pagination>
     </el-card>
     <!-- 模态框的实现 -->
-    <el-dialog title="编辑管理员" :visible.sync="dialogFormVisible" >
+    <el-dialog :title="titleMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
      <el-form ref="adminFormBox" :model="adminForm" label-width="100px" class="demo-ruleForm" size="mini">
        <el-row>
          <el-col :span="10">
@@ -120,11 +120,16 @@
              <el-input v-model="adminForm.adminName" auto-complete="off"></el-input>
            </el-form-item>
          </el-col>
-         <el-col :span="10">
-           <el-form-item label="密码">
-             <el-input v-model="adminForm.password" auto-complete="off"></el-input>
+         <el-col :span="10"  >
+           <el-form-item label="密码" >
+             <el-input v-model="adminForm.password" auto-complete="off" ></el-input>
            </el-form-item >
          </el-col>
+<!--         <el-col :span="10"  v-if="radio==='1'" >-->
+<!--           <el-form-item label="密码" >-->
+<!--             <el-input v-model="adminForm.password" auto-complete="off"></el-input>-->
+<!--           </el-form-item >-->
+<!--         </el-col>-->
        </el-row>
 
        <el-row>
@@ -231,7 +236,12 @@ export default {
         roleType: '',
         enable: ''
       },
-      imageUrl: ''
+      imageUrl: '',
+      titleMap: {
+        addClick: '添加管理员',
+        editClick: '编辑管理员'
+      },
+      dialogStatus: ''
     }
   },
 
@@ -265,14 +275,29 @@ export default {
     // 分页
     page (currentPage) {
       const _this = this
-      this.$axios.get('http://localhost:8081/admin/search/' + (currentPage) + '/2').then(function (resp) {
+      this.$axios.get('http://localhost:8081/admin/search/' + (currentPage) + '/6').then(function (resp) {
         console.log(resp)
         _this.tableData = resp.data.data.list
       })
     },
     // 添加页面跳转
     addClick () {
-      this.$router.push({path: '/add'})
+      // 显示弹框
+      this.dialogFormVisible = true
+      // 新增弹框标题
+      this.dialogStatus = 'addClick'
+      this.adminForm = {// 初始化addForm中的值
+        adminName: '',
+        password: '',
+        gender: 1,
+        avatar: '',
+        phone: '',
+        email: '',
+        identification: '',
+        address: '',
+        roleType: 1,
+        enable: 1
+      }
     },
     // 修改
     editClick (row) {
@@ -283,7 +308,6 @@ export default {
       this.dialogStatus = 'editClick'
       // 获得数据显示在编辑信息模态框里面
       this.adminForm = Object.assign({}, row)
-      console.log(this.adminForm.gender)
     },
     // 头像上下传
     handleAvatarSuccess (res, file) {
@@ -302,27 +326,29 @@ export default {
     },
     submitForm () {
       const _this = this
-      this.$axios.put('http://localhost:8081/admin/update/' + this.adminForm.adminId, this.adminForm).then(function (resp) {
-        if (resp.data.code === 200) {
-          _this.$alert('修改成功', '消息', {
-            confirmButtonText: '确定',
-            callback: action => {
-              _this.$router.push({path: '/index'})
-            }
-          })
-        } else {
-          _this.$alert('修改失败', '消息', {
-            confirmButtonText: '确定',
-            callback: action => {
-              _this.$message({
-                type: 'info',
-                message: '页面已刷新'
-              })
-            }
-          })
-        }
-      }).catch(failResponse => {
-      })
+      if (!this.adminForm.adminId) { // 当没有传过来id的时候,说明是添加,所以发送添加请求
+        this.$axios.post('http://localhost:8081/admin/add', this.adminForm).then(function (resp) {
+          if (resp.data.code === 200) {
+            _this.$message.success('添加成功！')
+            _this.dialogFormVisible = false
+          } else {
+            _this.$message.error('添加失败！')
+            _this.dialogFormVisible = false
+          }
+        }).catch(failResponse => {
+        })
+      } else {
+        this.$axios.put('http://localhost:8081/admin/update/' + this.adminForm.adminId, this.adminForm).then(function (resp) {
+          if (resp.data.code === 200) {
+            _this.$message.success('修改成功！')
+            _this.dialogFormVisible = false
+          } else {
+            _this.$message.error('修改失败！')
+            _this.dialogFormVisible = false
+          }
+        }).catch(failResponse => {
+        })
+      }
     },
     resetForm () {
       this.$refs.adminFormBox.resetFields()
@@ -330,7 +356,7 @@ export default {
   },
   created () {
     const _this = this
-    this.$axios.get('http://localhost:8081/admin/search/1/2').then(function (resp) {
+    this.$axios.get('http://localhost:8081/admin/search/1/6').then(function (resp) {
       console.log(resp)
       _this.tableData = resp.data.data.list
       _this.pageSize = resp.data.data.size
