@@ -8,6 +8,8 @@ import roleManager from '@/views/system/role/roleManager'
 import loginLog from '@/views/system/loginLog'
 // import * as process from '../../.eslintrc'
 import Test from '@/views/Test'
+import GoodsList from '@/views/goods/goods/GoodsList'
+import GoodsAdd from '@/views/goods/goods/GoodsAdd'
 
 Vue.use(Router)
 
@@ -34,7 +36,7 @@ const routes = [
     children: [
       {
         path: '/adminManager',
-        name: '管理员管理',
+        name: '管理员列表',
         component: adminManager
       },
       {
@@ -56,14 +58,14 @@ const routes = [
     component: Index,
     children: [
       {
-        path: '/adminManager',
-        name: '商品查询',
-        component: adminManager
+        path: '/goodsList',
+        name: '商品列表',
+        component: GoodsList
       },
       {
-        path: '/roleManager',
+        path: '/goods/goodsAdd',
         name: '商品添加',
-        component: roleManager
+        component: GoodsAdd
       },
       {
         path: '/loginLog',
@@ -152,7 +154,7 @@ const routes2 = [
     children: [
       {
         path: '/adminManager',
-        name: '管理员管理',
+        name: '管理员列表',
         component: adminManager
       },
       {
@@ -174,14 +176,14 @@ const routes2 = [
     component: Index,
     children: [
       {
-        path: '/adminManager',
-        name: '商品查询',
-        component: adminManager
+        path: '/goodsList',
+        name: '商品列表',
+        component: GoodsList
       },
       {
-        path: '/roleManager',
+        path: '/goods/goodsAdd',
         name: '商品添加',
-        component: roleManager
+        component: GoodsAdd
       },
       {
         path: '/loginLog',
