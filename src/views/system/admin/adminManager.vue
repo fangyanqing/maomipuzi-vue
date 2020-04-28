@@ -35,49 +35,14 @@
         :data="tableData"
         border
         style="width: 100%">
-        <el-table-column
-          type="selection"
-          width="80">
-        </el-table-column>
-        <el-table-column
-          prop="adminId"
-          label="ID"
-          sortable
-          width="80">
-        </el-table-column>
-        <el-table-column
-          prop="adminName"
-          label="姓名"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="roleType"
-          label="角色"
-          width="120"
-          :formatter="roleTypeFormat">
-        </el-table-column>
-        <el-table-column
-          prop="phone"
-          label="电话"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="email"
-          label="邮箱"
-          width="200">
-        </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="日期"
-          sortable
-          width="200"
-          column-key="date"
-          :formatter="dateFormat">
-        </el-table-column>
-        <el-table-column
-          prop="enable"
-          label="是否启用"
-          width="120">
+        <el-table-column type="selection" width="80"> </el-table-column>
+        <el-table-column prop="adminId" label="ID" sortable width="80"> </el-table-column>
+        <el-table-column prop="adminName" label="姓名" width="120"> </el-table-column>
+        <el-table-column prop="roleType" label="角色" width="120" :formatter="roleTypeFormat"> </el-table-column>
+        <el-table-column prop="phone" label="电话" width="120"> </el-table-column>
+        <el-table-column prop="email" label="邮箱" width="200"> </el-table-column>
+        <el-table-column prop="createTime" label="日期" sortable width="200" column-key="date" :formatter="dateFormat"> </el-table-column>
+        <el-table-column prop="enable"  label="是否启用" width="120">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.enable"
@@ -87,12 +52,9 @@
               inactive-color="#B9B9B9"
               @change="changeSwitch(scope.row)">
             </el-switch>
-          </template>
+        </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="160">
+        <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
             <el-button @click="editClick(scope.row)" type="text" size="small">编辑</el-button>
@@ -411,5 +373,8 @@ export default {
     width: 80px;
     height: 80px;
     display: block;
+  }
+  .el-table td, .el-table th {
+    text-align: center;
   }
 </style>
