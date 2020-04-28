@@ -96,7 +96,7 @@
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
             <el-button @click="editClick(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button @click="deletedClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -244,8 +244,20 @@ export default {
       dialogStatus: ''
     }
   },
-
+  created () {
+    this.getAdminList()
+  },
   methods: {
+    async getAdminList () {
+      const _this = this
+      this.$axios.get('http://localhost:8081/admin/search/1/6').then(function (resp) {
+        console.log(resp)
+        _this.tableData = resp.data.data.list
+        _this.pageSize = resp.data.data.size
+        _this.total = resp.data.data.total
+      }).catch(failResponse => {
+      })
+    },
     handleClick (row) {
       console.log(row)
     },
@@ -309,6 +321,21 @@ export default {
       // 获得数据显示在编辑信息模态框里面
       this.adminForm = Object.assign({}, row)
     },
+    deletedClick (row) {
+      const _this = this
+      this.$axios.put('http://localhost:8081/admin/deleted/' + this.adminForm.adminId, this.adminForm).then(function (resp) {
+        if (resp.data.code === 200) {
+          _this.$message.success('删除成功！')
+          _this.dialogFormVisible = false
+          _this.getAdminList()
+        } else {
+          _this.$message.error('删除失败！')
+          _this.dialogFormVisible = false
+          _this.getAdminList()
+        }
+      }).catch(failResponse => {
+      })
+    },
     // 头像上下传
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
@@ -331,9 +358,11 @@ export default {
           if (resp.data.code === 200) {
             _this.$message.success('添加成功！')
             _this.dialogFormVisible = false
+            _this.getAdminList()
           } else {
             _this.$message.error('添加失败！')
             _this.dialogFormVisible = false
+            _this.getAdminList()
           }
         }).catch(failResponse => {
         })
@@ -342,9 +371,11 @@ export default {
           if (resp.data.code === 200) {
             _this.$message.success('修改成功！')
             _this.dialogFormVisible = false
+            _this.getAdminList()
           } else {
             _this.$message.error('修改失败！')
             _this.dialogFormVisible = false
+            _this.getAdminList()
           }
         }).catch(failResponse => {
         })
@@ -353,16 +384,6 @@ export default {
     resetForm () {
       this.$refs.adminFormBox.resetFields()
     }
-  },
-  created () {
-    const _this = this
-    this.$axios.get('http://localhost:8081/admin/search/1/6').then(function (resp) {
-      console.log(resp)
-      _this.tableData = resp.data.data.list
-      _this.pageSize = resp.data.data.size
-      _this.total = resp.data.data.total
-    }).catch(failResponse => {
-    })
   }
 }
 </script>

@@ -7,10 +7,16 @@ import adminManager from '@/views/system/admin/adminManager'
 import roleManager from '@/views/system/role/roleManager'
 import loginLog from '@/views/system/loginLog'
 // import * as process from '../../.eslintrc'
+import Test from '@/views/Test'
 
 Vue.use(Router)
 
 const routes = [
+  {
+    path: '/Test',
+    name: '测试页面',
+    component: Test
+  },
   {
     path: '/',
     redirect: '/login2'
