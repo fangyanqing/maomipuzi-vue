@@ -3,13 +3,14 @@ import Router from 'vue-router'
 // 导入刚才编写的组件
 import Login from '@/components/Login'
 import Index from '@/views/index/index'
-import adminManager from '@/views/system/admin/adminManager'
-import roleManager from '@/views/system/role/roleManager'
+import AdminManager from '@/views/system/admin/AdminManager'
+import RoleManager from '@/views/system/role/RoleManager'
 import loginLog from '@/views/system/loginLog'
 // import * as process from '../../.eslintrc'
 import Test from '@/views/Test'
 import GoodsList from '@/views/goods/goods/GoodsList'
 import GoodsAdd from '@/views/goods/goods/GoodsAdd'
+import UserList from '@/views/user/UserList'
 
 Vue.use(Router)
 
@@ -37,12 +38,12 @@ const routes = [
       {
         path: '/adminManager',
         name: '管理员列表',
-        component: adminManager
+        component: AdminManager
       },
       {
         path: '/roleManager',
         name: '角色管理',
-        component: roleManager
+        component: RoleManager
       },
       {
         path: '/loginLog',
@@ -88,12 +89,12 @@ const routes = [
       {
         path: '/adminManager',
         name: '订单查询',
-        component: adminManager
+        component: AdminManager
       },
       {
         path: '/roleManager',
         name: '订单添加',
-        component: roleManager
+        component: RoleManager
       },
       {
         path: '/loginLog',
@@ -117,7 +118,14 @@ const routes = [
   {
     path: '/user',
     name: '用户',
-    component: Index
+    component: Index,
+    children: [
+      {
+        path: '/user/userList',
+        name: '用户列表',
+        component: UserList
+      }
+    ]
   },
   // ----------------------------------------------------------------------------------------------
   {
@@ -155,12 +163,12 @@ const routes2 = [
       {
         path: '/adminManager',
         name: '管理员列表',
-        component: adminManager
+        component: AdminManager
       },
       {
         path: '/roleManager',
         name: '角色管理',
-        component: roleManager
+        component: RoleManager
       },
       {
         path: '/loginLog',
@@ -221,7 +229,11 @@ const routes2 = [
     name: '用户',
     component: Index,
     children: [
-      {}
+      {
+        path: '/user/userList',
+        name: '用户列表',
+        component: UserList
+      }
     ]
   },
   // ----------------------------------------------------------------------------------------------

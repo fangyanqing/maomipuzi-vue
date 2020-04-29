@@ -75,7 +75,7 @@
     </el-card>
     <!-- 模态框的实现 -->
     <el-dialog :title="titleMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-     <el-form ref="adminFormBox" :model="adminForm" label-width="100px" class="demo-ruleForm" size="mini" :rules="adminFormRules">
+     <el-form ref="formBox" :model="adminForm" label-width="100px" class="demo-ruleForm" size="mini" :rules="adminFormRules">
        <el-row>
          <el-col :span="10">
            <el-form-item label="姓名" >
@@ -321,14 +321,14 @@ export default {
     },
     submitForm () {
       const _this = this
-      if (!this.adminForm.id) { // 当没有传过来id的时候,说明是添加,所以发送添加请求
+      if (!this.adminForm.adminId) { // 当没有传过来id的时候,说明是添加,所以发送添加请求
         this.$axios.post('http://localhost:8081/admin/add', this.adminForm).then(function (resp) {
           if (resp.data.code === 200) {
             _this.$message.success('添加成功！')
             _this.dialogFormVisible = false
             _this.getAdminList()
           } else {
-            _this.$message.error('添加失败！')
+            _this.$message.error('添加失败，请正确填写表单！')
             _this.dialogFormVisible = false
             _this.getAdminList()
           }
@@ -341,7 +341,7 @@ export default {
             _this.dialogFormVisible = false
             _this.getAdminList()
           } else {
-            _this.$message.error('修改失败！')
+            _this.$message.error('修改失败，请正确填写表单！')
             _this.dialogFormVisible = false
             _this.getAdminList()
           }
@@ -350,7 +350,7 @@ export default {
       }
     },
     resetForm () {
-      this.$refs.adminFormBox.resetFields()
+      this.$refs.formBox.resetFields()
     }
   }
 }

@@ -49,7 +49,7 @@
       ></el-pagination>
     </el-card>
 
-    <!-- 编辑角色对话框 -->
+    <!-- 添加/编辑对话框 -->
     <el-dialog :title="titleMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form :model="roleForm" ref="editRoleFormRef" :rules="roleFormRules" label-width="100px">
         <el-form-item label="角色类型" prop="roleType">
@@ -187,9 +187,9 @@ export default {
       // 新增弹框标题
       this.dialogStatus = 'editClick'
       // 获得数据显示在编辑信息模态框里面
-      // 获得数据显示在编辑信息模态框里面
       this.roleForm = Object.assign({}, row)
     },
+    // 提交
     submitForm () {
       const _this = this
       if (!this.roleForm.id) { // 当没有传过来id的时候,说明是添加,所以发送添加请求
@@ -199,7 +199,7 @@ export default {
             _this.dialogFormVisible = false
             _this.getRoleList()
           } else {
-            _this.$message.error('添加失败！')
+            _this.$message.error('添加失败，请正确填写表单！')
             _this.dialogFormVisible = false
           }
         }).catch(failResponse => {
@@ -211,7 +211,7 @@ export default {
             _this.dialogFormVisible = false
             _this.getRoleList()
           } else {
-            _this.$message.error('修改失败！')
+            _this.$message.error('修改失败，请正确填写表单！')
             _this.dialogFormVisible = false
           }
         }).catch(failResponse => {
