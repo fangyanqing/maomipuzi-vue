@@ -7,7 +7,7 @@
       <el-breadcrumb-item>添加商品</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 卡片视图 -->
-    <el-card>
+    <el-card style="margin-top: 10px">
       <!-- 提示 -->
       <el-alert title="添加商品信息" type="info" center show-icon :closable="false"></el-alert>
       <!-- 步骤条 -->
@@ -36,32 +36,28 @@
         >
           <el-tab-pane label="基本信息" name="0">
             <el-form-item label="商品名称" prop="goods_name">
-              <el-input v-model="addForm.goods_name"></el-input>
+              <el-input v-model="addForm.goodsName"></el-input>
             </el-form-item>
             <el-form-item label="商品价格" prop="price">
-              <el-input v-model="addForm.goods_price" type="number"></el-input>
+              <el-input v-model="addForm.price" type="price"></el-input>
             </el-form-item>
-            <el-form-item label="商品重量" prop="goods_weight">
-              <el-input v-model="addForm.goods_weight" type="number"></el-input>
+            <el-form-item label="商品数量" prop="weight">
+              <el-input v-model="addForm.weight" type="number"></el-input>
             </el-form-item>
-            <el-form-item label="商品数量" prop="goods_number">
-              <el-input v-model="addForm.goods_number" type="number"></el-input>
-            </el-form-item>
-            <el-form-item label="商品分类" prop="goods_cat">
+            <el-form-item label="商品分类" prop="typeName">
               <el-cascader
-                v-model="addForm.goods_cat"
+                v-model="addForm.typeName"
                 :options="cateList"
                 :props="cascaderProps"
                 @change="handleChange"
               ></el-cascader>
             </el-form-item>
           </el-tab-pane>
+
           <el-tab-pane label="商品参数" name="1">
             <!-- 渲染表单的Item项 -->
             <el-form-item
-              v-for="item in manyTableData
-
-            "
+              v-for="item in manyTableData"
               :key="item.attr_id"
               :label="item.attr_name"
             >
@@ -71,11 +67,13 @@
               </el-checkbox-group>
             </el-form-item>
           </el-tab-pane>
+
           <el-tab-pane label="商品属性" name="2">
             <el-form-item :label="item.attr_name" v-for="item in onlyTableData" :key="item.attr_id">
               <el-input v-model="item.attr_vals"></el-input>
             </el-form-item>
           </el-tab-pane>
+
           <el-tab-pane label="商品图片" name="3">
             <!-- action: 图片上传的API接口地址 -->
             <el-upload
@@ -89,55 +87,56 @@
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
           </el-tab-pane>
+
           <el-tab-pane label="商品内容" name="4">
             <!-- 富文本编辑器 -->
-            <quill-editor v-model="addForm.goods_introduce"></quill-editor>
+            <!--            <quill-editor v-model="addForm.goods_introduce"></quill-editor>-->
             <!-- 添加商品 -->
             <el-button type="primary" class="btnAdd" @click="addGoods">添加商品</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-form>
+
     </el-card>
+
     <el-dialog title="图片预览" :visible.sync="previewDialogVisible" width="50%">
       <img :src="picPreviewPath" alt="" class="previewImg">
     </el-dialog>
+
   </div>
 </template>
 
 <script>
 export default {
+  name: 'GoodsAdd',
   data () {
     return {
       // 步骤条默认激活 与左侧Tab联动
       activeIndex: '0',
       // 添加商品的表单对象
       addForm: {
-        goods_name: '',
-        goods_price: 0,
-        goods_weight: 0,
-        goods_number: 0,
+        goodsName: '',
+        price: 0,
+        weight: 0,
         // 商品所属分类数组
-        goods_cat: [],
+        // goods_cat: [],
         // 图片的数组
         pics: [],
         // 商品详情描述
-        goods_introduce: '',
+        description: '',
         attrs: []
       },
       addFormRules: {
-        goods_name: [
+        goodsName: [
           { required: true, message: '请输入商品名称', trigger: 'blur' }
         ],
-        goods_price: [
+        price: [
           { required: true, message: '请输入商品价格', trigger: 'blur' }
         ],
-        goods_weight: [
+        weight: [
           { required: true, message: '请输入商品重量', trigger: 'blur' }
         ],
-        goods_number: [
-          { required: true, message: '请输入商品数量', trigger: 'blur' }
-        ],
-        goods_cat: [
+        typeName: [
           { required: true, message: '请选择商品分类', trigger: 'blur' }
         ]
       },
@@ -169,66 +168,14 @@ export default {
     this.getCateList()
   },
   computed: {
-    getCateId () {
-      if (this.addForm.goods_cat.length === 3) {
-        return this.addForm.goods_cat[2]
-      }
-      return null
-    }
+    // getCateId () {
+    //   if (this.addForm.typeName.length === 3) {
+    //     return this.addForm.typeName[2]
+    //   }
+    //   return null
+    // }
   },
   methods: {
-    // 获取商品分类数据列表
-    async getCateList () {
-      const { data: res } = await this.$http.get('categories')
-      if (res.meta.status !== 200) {
-        return this.$message.error('获取商品列表失败！')
-      }
-      this.cateList = res.data
-    },
-    // 级联选择器选中项变化时出发
-    handleChange () {
-      if (this.addForm.goods_cat.length !== 3) {
-        this.addForm.goods_cat = []
-      }
-    },
-    beforeTabLeave (activeName, odlActiveName) {
-      // 未选中商品分类阻止Tab标签跳转
-      if (odlActiveName === '0' && this.addForm.goods_cat.length !== 3) {
-        this.$message.error('请先选择商品分类')
-        return false
-      }
-    },
-    // Tab标签被选中时触发
-    async tabClicked () {
-      // 访问动态参数面板
-      if (this.activeIndex === '1') {
-        const { data: res } = await this.$http.get(
-          `categories/${this.getCateId}/attributes`,
-          {
-            params: { sel: 'many' }
-          }
-        )
-        if (res.meta.status !== 200) {
-          return this.$message.error('获取动态参数列表失败！')
-        }
-        res.data.forEach(item => {
-          item.attr_vals =
-              item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
-        })
-        this.manyTableData = res.data
-      } else if (this.activeIndex === '2') {
-        const { data: res } = await this.$http.get(
-          `categories/${this.getCateId}/attributes`,
-          {
-            params: { sel: 'only' }
-          }
-        )
-        if (res.meta.status !== 200) {
-          return this.$message.error('获取动态参数列表失败！')
-        }
-        this.onlyTableData = res.data
-      }
-    },
     // 处理图片预览
     handlePreview (file) {
       this.picPreviewPath = file.response.data.url
@@ -250,8 +197,63 @@ export default {
       // 2.将图片信息对象，push到pics数组中
       this.addForm.pics.push(picInfo)
     },
+    // 获取商品分类数据列表
+    getCateList () {
+      const _this = this
+      this.$axios.get('http://localhost:8082/type/findAll').then(function (resp) {
+        if (resp.data.code !== 200) {
+          return _this.$message.error('获取商品列表失败！')
+        }
+        _this.cateList = resp.data.data.list
+      })
+    },
+    // 级联选择器选中项变化时出发
+    handleChange () {
+      if (this.addForm.typeName.length !== 3) {
+        this.addForm.typeName = []
+      }
+    },
+    beforeTabLeave (activeName, odlActiveName) {
+      // // 未选中商品分类阻止Tab标签跳转
+      // if (odlActiveName === '0' && this.addForm.typeName.length !== 3) {
+      //   this.$message.error('请先选择商品分类')
+      //   return false
+      // }
+    },
+    // Tab标签被选中时触发
+    tabClicked () {
+      // // 访问动态参数面板
+      // if (this.activeIndex === '1') {
+      //   const { data: res } = this.$axios.get(
+      //     `categories/${this.getCateId}/attributes`,
+      //     {
+      //       params: { sel: 'many' }
+      //     }
+      //   )
+      //   if (res.meta.status !== 200) {
+      //     return this.$message.error('获取动态参数列表失败！')
+      //   }
+      //   res.data.forEach(item => {
+      //     item.attr_vals =
+      //       item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
+      //   })
+      //   this.manyTableData = res.data
+      // } else if (this.activeIndex === '2') {
+      //   const { data: res } = this.$http.get(
+      //     `categories/${this.getCateId}/attributes`,
+      //     {
+      //       params: { sel: 'only' }
+      //     }
+      //   )
+      //   if (res.meta.status !== 200) {
+      //     return this.$message.error('获取动态参数列表失败！')
+      //   }
+      //   this.onlyTableData = res.data
+      // }
+    },
     // 添加商品
     addGoods () {
+      this.$message.success('添加商品成功!')
     }
   }
 }
@@ -260,6 +262,9 @@ export default {
 <style scoped>
   .el-checkbox {
     margin: 0 8px 0 0 !important;
+  }
+  .el-input{
+    width: 90%;
   }
   .previewImg{
     width: 100%;

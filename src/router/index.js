@@ -58,7 +58,7 @@ const routes = [
     component: Index,
     children: [
       {
-        path: '/goodsList',
+        path: '/goods/goodsList',
         name: '商品列表',
         component: GoodsList
       },
@@ -176,7 +176,7 @@ const routes2 = [
     component: Index,
     children: [
       {
-        path: '/goodsList',
+        path: '/goods/goodsList',
         name: '商品列表',
         component: GoodsList
       },
