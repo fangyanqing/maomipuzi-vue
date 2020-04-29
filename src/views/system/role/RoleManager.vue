@@ -23,7 +23,7 @@
       </el-row>
     </el-card>
 
-    <el-card>
+    <el-card style="width:100%;margin-top: 10px">
       <!-- 角色列表 -->
       <el-table :data="rolesList" border stripe>
         <el-table-column type="selection" width="60"></el-table-column>

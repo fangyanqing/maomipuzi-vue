@@ -25,7 +25,7 @@
       </el-row>
     </el-card>
 
-  <el-card>
+  <el-card style="width:100%;margin-top: 10px">
     <!-- 用户列表区域 -->
     <el-table :data="userList" border stripe>
       <!-- stripe: 斑马条纹
