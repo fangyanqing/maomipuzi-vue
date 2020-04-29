@@ -65,8 +65,8 @@
       <!-- 分页区域 -->
       <el-pagination
         background
-        layout="prev, pager, next"
-        :current-page="currentPage"
+        layout="total, prev, pager, next, jumper"
+        :current-page="pagenum"
         :page-size="pageSize"
         :total="total"
         @current-change="page"
@@ -75,7 +75,7 @@
     </el-card>
     <!-- 模态框的实现 -->
     <el-dialog :title="titleMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-     <el-form ref="adminFormBox" :model="adminForm" label-width="100px" class="demo-ruleForm" size="mini">
+     <el-form ref="adminFormBox" :model="adminForm" label-width="100px" class="demo-ruleForm" size="mini" :rules="adminFormRules">
        <el-row>
          <el-col :span="10">
            <el-form-item label="姓名" >
@@ -177,8 +177,8 @@ export default {
     return {
       tableData: [],
       valueTime: '',
-      currentPage: 0,
-      pageSize: 0,
+      pagenum: 1,
+      pageSize: 6,
       total: 0,
       pickerOptions: {
         disabledDate: (time) => {
@@ -187,16 +187,8 @@ export default {
       },
       dialogFormVisible: false,
       adminForm: {
-        adminName: '',
-        password: '',
-        gender: '',
-        avatar: '',
-        phone: '',
-        email: '',
-        identification: '',
-        address: '',
-        roleType: '',
-        enable: ''
+      },
+      adminFormRules: {
       },
       imageUrl: '',
       titleMap: {
@@ -212,12 +204,13 @@ export default {
   methods: {
     async getAdminList () {
       const _this = this
-      this.$axios.get('http://localhost:8081/admin/search/1/6').then(function (resp) {
+      this.$axios.get('http://localhost:8081/admin/search/' + _this.pagenum + '/' + _this.pageSize).then(function (resp) {
         console.log(resp)
+        if (resp.data.code !== 200) {
+          return _this.$message.error('获取管理员列表列表失败！')
+        }
         _this.tableData = resp.data.data.list
-        _this.pageSize = resp.data.data.size
         _this.total = resp.data.data.total
-      }).catch(failResponse => {
       })
     },
     handleClick (row) {
@@ -246,13 +239,9 @@ export default {
         return ''
       }
     },
-    // 分页
-    page (currentPage) {
-      const _this = this
-      this.$axios.get('http://localhost:8081/admin/search/' + (currentPage) + '/6').then(function (resp) {
-        console.log(resp)
-        _this.tableData = resp.data.data.list
-      })
+    page (newSize) {
+      this.pagenum = newSize
+      this.getAdminList()
     },
     // 添加页面跳转
     addClick () {
@@ -271,6 +260,23 @@ export default {
         address: '',
         roleType: 1,
         enable: 1
+      }
+      this.adminFormRules = {
+        adminName: '',
+        password: '',
+        gender: 1,
+        avatar: '',
+        email: '',
+        address: '',
+        roleType: 1,
+        enable: 1,
+        phone: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' }
+        ],
+        identification: [
+          { required: true, message: '请输入身份证号码', trigger: 'blur' },
+          { min: 15, max: 18, message: '长度为15或者18位', trigger: 'blur' }
+        ]
       }
     },
     // 修改
@@ -315,7 +321,7 @@ export default {
     },
     submitForm () {
       const _this = this
-      if (!this.adminForm.adminId) { // 当没有传过来id的时候,说明是添加,所以发送添加请求
+      if (!this.adminForm.id) { // 当没有传过来id的时候,说明是添加,所以发送添加请求
         this.$axios.post('http://localhost:8081/admin/add', this.adminForm).then(function (resp) {
           if (resp.data.code === 200) {
             _this.$message.success('添加成功！')
