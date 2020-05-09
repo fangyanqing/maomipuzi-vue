@@ -14,6 +14,7 @@ import UserList from '@/views/user/UserList'
 import OrderList from '@/views/order/OrderList'
 import OrderEdit from '../views/order/OrderEdit'
 import TypeList from '../views/goods/type/TypeList'
+import StockList from '../views/goods/stock/StockList'
 
 Vue.use(Router)
 
@@ -105,7 +106,14 @@ const routes = [
   {
     path: '/stock',
     name: '库存',
-    component: Index
+    component: Index,
+    children: [
+      {
+        path: '/stock/stockList',
+        name: '库存列表',
+        component: StockList
+      }
+    ]
   },
   // ----------------------------------------------------------------------------------------------
   {
@@ -222,7 +230,11 @@ const routes2 = [
     name: '库存',
     component: Index,
     children: [
-      {}
+      {
+        path: '/stock/stockList',
+        name: '库存列表',
+        component: StockList
+      }
     ]
   },
   // ----------------------------------------------------------------------------------------------
