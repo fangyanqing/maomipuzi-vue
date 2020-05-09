@@ -17,6 +17,7 @@ import TypeList from '../views/goods/type/TypeList'
 import StockList from '../views/goods/stock/StockList'
 import RefundList from '../views/refund/RefundList'
 import CartInfoList from '../views/shoppingcart/CartInfoList'
+import ExpressList from '../views/express/ExpressList'
 
 Vue.use(Router)
 
@@ -111,6 +112,11 @@ const routes = [
         path: '/cart/cartInfoList',
         name: '购物车列表',
         component: CartInfoList
+      },
+      {
+        path: '/express/expressList',
+        name: '快递公司列表',
+        component: ExpressList
       }
     ]
   },
@@ -243,6 +249,11 @@ const routes2 = [
         path: '/cart/cartInfoList',
         name: '购物车列表',
         component: CartInfoList
+      },
+      {
+        path: '/express/expressList',
+        name: '快递公司列表',
+        component: ExpressList
       }
     ]
   },
