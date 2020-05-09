@@ -194,7 +194,7 @@ export default {
     // 监听 switch开关 状态改变
     changeSwitch (row) {
       const _this = this
-      this.$axios.put('http://localhost:8083/user/update/' + this.userForm.id, this.userForm).then(function (resp) {
+      this.$axios.put('http://localhost:8083/user/update/' + this.userForm.userId, this.userForm).then(function (resp) {
         if (resp.data.code === 200) {
           _this.$message.success('更新用户状态成功！')
           _this.getRoleList()
@@ -287,7 +287,7 @@ export default {
     // 提交
     submitForm () {
       const _this = this
-      if (!this.userForm.id) { // 当没有传过来id的时候,说明是添加,所以发送添加请求
+      if (!this.userForm.userId) { // 当没有传过来id的时候,说明是添加,所以发送添加请求
         this.$axios.post('http://localhost:8083/user/add', this.userForm).then(function (resp) {
           console.log(resp)
           if (resp.data.code === 200) {
@@ -301,7 +301,7 @@ export default {
         }).catch(failResponse => {
         })
       } else {
-        this.$axios.put('http://localhost:8083/user/update/' + this.userForm.id, this.userForm).then(function (resp) {
+        this.$axios.put('http://localhost:8083/user/update/' + this.userForm.userId, this.userForm).then(function (resp) {
           console.log(resp)
           if (resp.data.code === 200) {
             _this.$message.success('修改成功！')

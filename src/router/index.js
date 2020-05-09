@@ -13,6 +13,7 @@ import GoodsAdd from '@/views/goods/goods/GoodsAdd'
 import UserList from '@/views/user/UserList'
 import OrderList from '@/views/order/OrderList'
 import OrderEdit from '../views/order/OrderEdit'
+import TypeList from '../views/goods/type/TypeList'
 
 Vue.use(Router)
 
@@ -76,9 +77,9 @@ const routes = [
         component: loginLog
       },
       {
-        path: '/loginLog',
-        name: '商品删除',
-        component: loginLog
+        path: '/type/typeList',
+        name: '商品类型列表',
+        component: TypeList
       }
     ]
   },
@@ -191,9 +192,9 @@ const routes2 = [
         component: loginLog
       },
       {
-        path: '/loginLog',
-        name: '商品删除',
-        component: loginLog
+        path: '/type/typeList',
+        name: '商品类型列表',
+        component: TypeList
       }
     ]
   },
