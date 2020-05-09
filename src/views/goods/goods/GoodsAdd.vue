@@ -39,10 +39,10 @@
               <el-input v-model="addForm.goodsName"></el-input>
             </el-form-item>
             <el-form-item label="商品价格" prop="price">
-              <el-input v-model="addForm.price" type="number"></el-input>
+              <el-input v-model="addForm.price" type="number" :min="0"></el-input>
             </el-form-item>
             <el-form-item label="商品重量" prop="weight">
-              <el-input v-model="addForm.weight" type="number"></el-input>
+              <el-input v-model="addForm.weight" type="number" :min="0"></el-input>
             </el-form-item>
             <el-form-item label="商品分类" prop="typeName">
               <el-select v-model="addForm.typeName" placeholder="请选择">
@@ -57,22 +57,28 @@
           </el-tab-pane>
 
           <el-tab-pane label="商品参数" name="1">
-            <!-- 渲染表单的Item项 -->
-            <el-form-item
-              v-for="item in manyTableData"
-              :key="item.attr_id"
-              :label="item.attr_name"
-            >
-              <!-- 复选框组 -->
-              <el-checkbox-group v-model="item.attr_vals">
-                <el-checkbox :label="cb" v-for="(cb, i) in item.attr_vals" :key="i" border></el-checkbox>
-              </el-checkbox-group>
+<!--            &lt;!&ndash; 渲染表单的Item项 &ndash;&gt;-->
+<!--            <el-form-item-->
+<!--              v-for="item in manyTableData"-->
+<!--              :key="item.attr_id"-->
+<!--              :label="item.attr_name"-->
+<!--            >-->
+<!--              &lt;!&ndash; 复选框组 &ndash;&gt;-->
+<!--              <el-checkbox-group v-model="item.attr_vals">-->
+<!--                <el-checkbox :label="cb" v-for="(cb, i) in item.attr_vals" :key="i" border></el-checkbox>-->
+<!--              </el-checkbox-group>-->
+<!--            </el-form-item>-->
+            <el-form-item label="商品名称" prop="goods_name">
+              <el-input v-model="addForm.goodsName"></el-input>
             </el-form-item>
           </el-tab-pane>
 
           <el-tab-pane label="商品属性" name="2">
-            <el-form-item :label="item.attr_name" v-for="item in onlyTableData" :key="item.attr_id">
-              <el-input v-model="item.attr_vals"></el-input>
+<!--            <el-form-item :label="item.attr_name" v-for="item in onlyTableData" :key="item.attr_id">-->
+<!--              <el-input v-model="item.attr_vals"></el-input>-->
+<!--            </el-form-item>-->
+            <el-form-item label="商品名称" prop="goods_name">
+              <el-input v-model="addForm.goodsName"></el-input>
             </el-form-item>
           </el-tab-pane>
 
@@ -212,6 +218,14 @@ export default {
     },
     // Tab标签被选中时触发
     tabClicked () {
+      console.log(this.activeIndex)
+      // 访问动态参数面板
+      if (this.activeIndex === '1') {
+
+      } else if (this.activeIndex === '2') {
+
+      }
+
       // // 访问动态参数面板
       // if (this.activeIndex === '1') {
       //   const { data: res } = this.$axios.get(
