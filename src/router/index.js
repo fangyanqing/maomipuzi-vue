@@ -11,6 +11,8 @@ import Test from '@/views/Test'
 import GoodsList from '@/views/goods/goods/GoodsList'
 import GoodsAdd from '@/views/goods/goods/GoodsAdd'
 import UserList from '@/views/user/UserList'
+import OrderList from '@/views/order/OrderList'
+import OrderEdit from '../views/order/OrderEdit'
 
 Vue.use(Router)
 
@@ -87,24 +89,14 @@ const routes = [
     component: Index,
     children: [
       {
-        path: '/adminManager',
-        name: '订单查询',
-        component: AdminManager
+        path: '/order/orderList',
+        name: '订单列表',
+        component: OrderList
       },
       {
-        path: '/roleManager',
-        name: '订单添加',
-        component: RoleManager
-      },
-      {
-        path: '/loginLog',
+        path: '/order/orderEdit',
         name: '订单修改',
-        component: loginLog
-      },
-      {
-        path: '/loginLog',
-        name: '订单删除',
-        component: loginLog
+        component: OrderEdit
       }
     ]
   },
@@ -211,7 +203,16 @@ const routes2 = [
     name: '订单',
     component: Index,
     children: [
-      {}
+      {
+        path: '/order/orderList',
+        name: '订单列表',
+        component: OrderList
+      },
+      {
+        path: '/order/orderEdit',
+        name: '订单修改',
+        component: OrderEdit
+      }
     ]
   },
   // ----------------------------------------------------------------------------------------------

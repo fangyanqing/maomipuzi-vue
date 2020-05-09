@@ -72,7 +72,7 @@
 
     <!-- 添加/编辑对话框 -->
     <el-dialog :title="titleMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-      <el-form :model="userForm" ref="editRoleFormRef" :rules="userFormRules" label-width="100px">
+      <el-form :model="userForm" ref="editFormRef" :rules="userFormRules" label-width="100px">
         <el-form-item label="昵称" >
           <el-input v-model="userForm.userNickname"></el-input>
         </el-form-item>
