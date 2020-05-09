@@ -193,8 +193,9 @@ export default {
   methods: {
     // 监听 switch开关 状态改变
     changeSwitch (row) {
+      console.log('------row.userId-------' + row.userId)
       const _this = this
-      this.$axios.put('http://localhost:8083/user/update/' + this.userForm.userId, this.userForm).then(function (resp) {
+      this.$axios.put('http://localhost:8083/user/update/' + row.userId, row.enable).then(function (resp) {
         if (resp.data.code === 200) {
           _this.$message.success('更新用户状态成功！')
           _this.getRoleList()
