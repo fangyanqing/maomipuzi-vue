@@ -10,7 +10,7 @@
       <el-card style="width:100%;margin-top: 10px">
         <el-row :gutter="20">
           <el-col :span="6">
-            <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getOrderList">
+            <el-input placeholder="请输入内容" v-model="queryInfo" clearable @clear="getOrderList">
               <el-button slot="append" icon="el-icon-search" @click="getOrderList"></el-button>
             </el-input>
           </el-col>
@@ -24,18 +24,19 @@
         <!-- 订单列表 -->
         <el-table :data="orderList" border stripe>
           <el-table-column type="selection" width="60"></el-table-column>
-          <el-table-column label="订单编号" prop="orderNo" width="150"></el-table-column>
-          <el-table-column label="商品编号" prop="goodsNo" width="150"></el-table-column>
-          <el-table-column label="订单总数" prop="totalNum" width="80"></el-table-column>
-          <el-table-column label="订单总价" prop="totalPrice" width="100"></el-table-column>
+          <el-table-column label="订单编号" prop="orderNo" width="150" sortable></el-table-column>
+          <el-table-column label="商品编号" prop="goodsNo" width="150" sortable></el-table-column>
+          <el-table-column label="订单总数" prop="totalNum" width="80" sortable></el-table-column>
+          <el-table-column label="订单总价" prop="totalPrice" width="100" sortable></el-table-column>
           <el-table-column label="支付状态" prop="payStatus" width="80" :formatter="payStatusFormat"></el-table-column>
-          <el-table-column label="快递单号" prop="deliveryId" width="150"></el-table-column>
+          <el-table-column label="快递单号" prop="deliveryId" width="150" sortable></el-table-column>
           <el-table-column label="配送方式" prop="deliveryType" width="80" :formatter="deliveryTypeFormat"></el-table-column>
           <el-table-column label="发货状态" prop="deliveryStatus" width="80" :formatter="deliveryStatusFormat"></el-table-column>
           <el-table-column label="订单状态" prop="orderInfoStatus" width="80" :formatter="orderInfoStatusFormat"></el-table-column>
-          <el-table-column label="备注" prop="remark" width="200"></el-table-column>
-          <el-table-column label="操作" width="200px">
+          <el-table-column label="备注" prop="remark" width="180"></el-table-column>
+          <el-table-column label="操作" width="300px">
             <template slot-scope="scope">
+              <el-button type="primary" icon="el-icon-search" size="mini">查看</el-button>
               <el-button type="primary" icon="el-icon-edit" size="mini" @click="editClick">编辑</el-button>
               <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeById(scope.row.id)">删除</el-button>
             </template>

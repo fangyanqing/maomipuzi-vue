@@ -16,6 +16,7 @@ import OrderEdit from '../views/order/OrderEdit'
 import TypeList from '../views/goods/type/TypeList'
 import StockList from '../views/goods/stock/StockList'
 import RefundList from '../views/refund/RefundList'
+import CartInfoList from '../views/shoppingcart/CartInfoList'
 
 Vue.use(Router)
 
@@ -102,9 +103,14 @@ const routes = [
         component: OrderEdit
       },
       {
-        path: '/order/refund',
+        path: '/refund/refund',
         name: '退款列表',
         component: RefundList
+      },
+      {
+        path: '/cart/cartInfoList',
+        name: '购物车列表',
+        component: CartInfoList
       }
     ]
   },
@@ -229,9 +235,14 @@ const routes2 = [
         component: OrderEdit
       },
       {
-        path: '/order/refund',
+        path: '/refund/refund',
         name: '退款列表',
         component: RefundList
+      },
+      {
+        path: '/cart/cartInfoList',
+        name: '购物车列表',
+        component: CartInfoList
       }
     ]
   },

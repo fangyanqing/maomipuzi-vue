@@ -10,7 +10,7 @@
     <el-card style="width:100%;margin-top: 10px">
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getRefundList">
+          <el-input placeholder="请输入内容" v-model="queryInfo" clearable @clear="getRefundList">
             <el-button slot="append" icon="el-icon-search" @click="getRefundList"></el-button>
           </el-input>
         </el-col>
@@ -24,17 +24,18 @@
       <!-- 订单列表 -->
       <el-table :data="refundList" border stripe>
         <el-table-column type="selection" width="60"></el-table-column>
-        <el-table-column label="订单编号" prop="orderNo" width="150"></el-table-column>
+        <el-table-column label="订单编号" prop="orderNo" width="150" sortable></el-table-column>
         <el-table-column label="退款方式" prop="refundWay" width="80" :formatter="refundWayFormat"></el-table-column>
         <el-table-column label="退款原因" prop="refundReason" width="100" :formatter="refundReasonFormat"></el-table-column>
         <el-table-column label="退款说明" prop="refundInstructions" width="200"></el-table-column>
         <el-table-column label="货物状态" prop="goodsStatus" width="80" :formatter="goodsStatusFormat"></el-table-column>
         <el-table-column label="退款状态" prop="status" width="80" :formatter="statusFormat"></el-table-column>
-        <el-table-column label="退款申请时间" prop="applicationTime" width="110" :formatter="dateFormat"></el-table-column>
-        <el-table-column label="退款成功时间" prop="successTime" width="110" :formatter="dateFormat"></el-table-column>
+        <el-table-column label="退款申请时间" prop="applicationTime" width="110" :formatter="dateFormat" sortable></el-table-column>
+        <el-table-column label="退款成功时间" prop="successTime" width="110" :formatter="dateFormat" sortable></el-table-column>
         <el-table-column label="操作人" prop="operator" width="80"></el-table-column>
-        <el-table-column label="操作" width="200px">
+        <el-table-column label="操作" width="300px">
           <template slot-scope="scope">
+            <el-button type="primary" icon="el-icon-search" size="mini">查看</el-button>
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="editClick(scope.row)">编辑</el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeById(scope.row.id)">删除</el-button>
           </template>
