@@ -16,7 +16,7 @@
         <el-step title="商品参数"></el-step>
         <el-step title="商品属性"></el-step>
         <el-step title="商品图片"></el-step>
-        <el-step title="商品内容"></el-step>
+        <el-step title="商品添加"></el-step>
         <el-step title="完成"></el-step>
       </el-steps>
 
@@ -50,36 +50,76 @@
                   v-for="item in typeList"
                   :key="item.typeId"
                   :label="item.typeName"
-                  :value="item.typeId">
+                  :value="item.typeName">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-tab-pane>
 
           <el-tab-pane label="商品参数" name="1">
-<!--            &lt;!&ndash; 渲染表单的Item项 &ndash;&gt;-->
-<!--            <el-form-item-->
-<!--              v-for="item in manyTableData"-->
-<!--              :key="item.attr_id"-->
-<!--              :label="item.attr_name"-->
-<!--            >-->
-<!--              &lt;!&ndash; 复选框组 &ndash;&gt;-->
-<!--              <el-checkbox-group v-model="item.attr_vals">-->
-<!--                <el-checkbox :label="cb" v-for="(cb, i) in item.attr_vals" :key="i" border></el-checkbox>-->
-<!--              </el-checkbox-group>-->
-<!--            </el-form-item>-->
-            <el-form-item label="商品名称" prop="goods_name">
-              <el-input v-model="addForm.goodsName"></el-input>
+            <el-form-item label="商品参数">
+              <div>
+                <span style="margin-right: 10px">颜色：</span>
+                <el-radio v-model="addForm.colour" :label="1" :value="黑色">黑色</el-radio>
+                <el-radio v-model="addForm.colour" :label="2" :value="白色">白色</el-radio>
+                <el-radio v-model="addForm.colour" :label="3" :value="橘黄色">橘黄色</el-radio>
+                <el-radio v-model="addForm.colour" :label="4" :value="灰色">灰色</el-radio>
+                <el-radio v-model="addForm.colour" :label="5" :value="棕褐色">棕褐色</el-radio>
+              </div>
+              <div>
+                <span style="margin-right: 10px">性别：</span>
+                <el-radio v-model="addForm.sex" :label="1">公猫</el-radio>
+                <el-radio v-model="addForm.sex" :label="2">母猫</el-radio>
+              </div>
+              <div>
+                <span style="margin-right: 10px">体型：</span>
+                <el-radio v-model="addForm.size" :label="1">大型</el-radio>
+                <el-radio v-model="addForm.size" :label="2">中型</el-radio>
+                <el-radio v-model="addForm.size" :label="3">小型</el-radio>
+              </div>
+              <div>
+                <span style="margin-right: 10px">年龄：</span>
+                <el-radio v-model="addForm.age" :label="1">2个月以内</el-radio>
+                <el-radio v-model="addForm.age" :label="2">2-3个月</el-radio>
+                <el-radio v-model="addForm.age" :label="3">3-6个月</el-radio>
+                <el-radio v-model="addForm.age" :label="4">1岁</el-radio>
+                <el-radio v-model="addForm.age" :label="5">1岁以上</el-radio>
+              </div>
+              <div>
+                <span style="margin-right: 10px">市场价格：</span>
+                <el-radio v-model="addForm.marketPrice" :label="1">2000元以内</el-radio>
+                <el-radio v-model="addForm.marketPrice" :label="2">2000-3000</el-radio>
+                <el-radio v-model="addForm.marketPrice" :label="3">3000-5000</el-radio>
+                <el-radio v-model="addForm.marketPrice" :label="4">5000-8000</el-radio>
+                <el-radio v-model="addForm.marketPrice" :label="5">8000以上</el-radio>
+              </div>
             </el-form-item>
           </el-tab-pane>
 
           <el-tab-pane label="商品属性" name="2">
-<!--            <el-form-item :label="item.attr_name" v-for="item in onlyTableData" :key="item.attr_id">-->
-<!--              <el-input v-model="item.attr_vals"></el-input>-->
-<!--            </el-form-item>-->
-            <el-form-item label="商品名称" prop="goods_name">
-              <el-input v-model="addForm.goodsName"></el-input>
-            </el-form-item>
+            <el-form :model="addForm2">
+                <el-form-item label="商品名称" prop="goods_name">
+                  <el-input v-model="addForm.goodsName"></el-input>
+                </el-form-item>
+                <el-form-item label="副标题" prop="caption">
+                  <el-input v-model="addForm2.caption"></el-input>
+                </el-form-item>
+                <el-form-item label="地区" prop="area">
+                  <el-input v-model="addForm2.area"></el-input>
+                </el-form-item>
+                <el-form-item label="描述" prop="description">
+                  <el-input v-model="addForm2.description"></el-input>
+                </el-form-item>
+                <el-form-item label="性格" prop="characters">
+                  <el-input v-model="addForm2.characters"></el-input>
+                </el-form-item>
+                <el-form-item label="售后服务" prop="sale_service">
+                    <el-radio v-model="addForm2.saleService" :label="1">15天内退货</el-radio>
+                    <el-radio v-model="addForm2.saleService" :label="2">订单险</el-radio>
+                    <el-radio v-model="addForm2.saleService" :label="3">付款三天内发货</el-radio>
+                    <el-radio v-model="addForm2.saleService" :label="4">付款七天后未发货，自动退款</el-radio>
+                </el-form-item>
+            </el-form>
           </el-tab-pane>
 
           <el-tab-pane label="商品图片" name="3">
@@ -96,7 +136,7 @@
             </el-upload>
           </el-tab-pane>
 
-          <el-tab-pane label="商品内容" name="4">
+          <el-tab-pane label="商品添加" name="4">
             <!-- 富文本编辑器 -->
 <!--            <quill-editor v-model="addForm.goods_introduce"></quill-editor>-->
             <!-- 添加商品 -->
@@ -126,13 +166,26 @@ export default {
         goodsName: '',
         price: 0,
         weight: 0,
+        typeName: '',
+        colour: '',
+        sex: '',
+        size: '',
+        age: '',
+        marketPrice: ''
         // 商品所属分类数组
         // goods_cat: [],
         // 图片的数组
-        pics: [],
+        // pics: [],
         // 商品详情描述
+        // description: ''
+        // attrs: []
+      },
+      addForm2: {
+        caption: '',
+        area: '',
         description: '',
-        attrs: []
+        characters: '',
+        saleService: ''
       },
       addFormRules: {
         goodsName: [
@@ -225,35 +278,6 @@ export default {
       } else if (this.activeIndex === '2') {
 
       }
-
-      // // 访问动态参数面板
-      // if (this.activeIndex === '1') {
-      //   const { data: res } = this.$axios.get(
-      //     `categories/${this.getCateId}/attributes`,
-      //     {
-      //       params: { sel: 'many' }
-      //     }
-      //   )
-      //   if (res.meta.status !== 200) {
-      //     return this.$message.error('获取动态参数列表失败！')
-      //   }
-      //   res.data.forEach(item => {
-      //     item.attr_vals =
-      //       item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
-      //   })
-      //   this.manyTableData = res.data
-      // } else if (this.activeIndex === '2') {
-      //   const { data: res } = this.$http.get(
-      //     `categories/${this.getCateId}/attributes`,
-      //     {
-      //       params: { sel: 'only' }
-      //     }
-      //   )
-      //   if (res.meta.status !== 200) {
-      //     return this.$message.error('获取动态参数列表失败！')
-      //   }
-      //   this.onlyTableData = res.data
-      // }
     },
     // 添加商品
     addGoods () {
@@ -284,7 +308,27 @@ export default {
         })
         // 发起请求添加商品
         // 商品名称必须是唯一的
-        this.$message.success('添加商品成功!')
+
+        const _this = this
+        this.$axios.post('http://localhost:8082/skuGoods/add', this.addForm).then(function (resp) {
+          if (resp.data.code === 200) {
+            _this.$message.success('添加成功！')
+            _this.$router.push({path: '/goods/goodsList'})
+          } else {
+            _this.$message.error('添加失败，请正确填写表单！')
+          }
+        }).catch(failResponse => {
+        })
+
+        this.$axios.post('http://localhost:8082/spuGoods/add', this.addForm2).then(function (resp) {
+          if (resp.data.code === 200) {
+            _this.$message.success('添加成功！')
+            _this.$router.push({path: '/goods/goodsList'})
+          } else {
+            _this.$message.error('添加失败，请正确填写表单！')
+          }
+        }).catch(failResponse => {
+        })
       })
     }
   }
