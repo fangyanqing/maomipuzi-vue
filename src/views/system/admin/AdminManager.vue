@@ -21,7 +21,7 @@
         </el-col>
         <el-col :span="6">
           <el-input placeholder="请输入内容">
-            <el-button slot="append" icon="el-icon-search" ></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
           </el-input>
         </el-col>
         <el-col :span="4">
@@ -351,6 +351,9 @@ export default {
     },
     resetForm () {
       this.$refs.formBox.resetFields()
+    },
+    search () {
+      alert('搜索')
     }
   }
 }

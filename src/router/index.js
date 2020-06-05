@@ -328,13 +328,13 @@ const router = new Router({
 })
 
 // 拦截页面，不登录不可操作其他页面
-// router.beforeEach((to, from, next) => {
-//   // 访问登录页，放行
-//   if (to.path === '/login2') return next()
-//   // 获取token
-//   const tokenStr = window.sessionStorage.getItem('token')
-//   // 没有token, 强制跳转到登录页
-//   if (!tokenStr) return next('/login2')
-//   next()
-// })
+router.beforeEach((to, from, next) => {
+  // 访问登录页，放行
+  if (to.path === '/login2') return next()
+  // 获取token
+  const tokenStr = window.sessionStorage.getItem('token')
+  // 没有token, 强制跳转到登录页
+  if (!tokenStr) return next('/login2')
+  next()
+})
 export default router

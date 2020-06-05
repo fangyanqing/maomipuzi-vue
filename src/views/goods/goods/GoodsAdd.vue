@@ -171,7 +171,8 @@ export default {
         sex: '',
         size: '',
         age: '',
-        marketPrice: ''
+        marketPrice: '',
+        image: '/src/images/slideshow/maomi.jpg'
         // 商品所属分类数组
         // goods_cat: [],
         // 图片的数组
