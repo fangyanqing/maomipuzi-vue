@@ -132,6 +132,13 @@ export default {
     },
     // excel导出
     downloadClick () {
+      const _this = this
+      this.$axios.get('http://localhost:8085/orderInfo/export').then(function (resp) {
+        console.log(resp)
+        if (resp.status === 200) {
+          return _this.$message.success('订单导出成功！')
+        }
+      })
     },
     // 编辑
     editClick () {
